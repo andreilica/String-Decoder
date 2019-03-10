@@ -1,0 +1,25 @@
+*Enunt*
+
+	Să se implementeze un program care decodează o serie de șiruri codificate prin diferite metode criptografice.  
+
+
+*Implementare*
+
+Task 1. XOR între două șiruri de octeți
+
+	In main am determinat adresele celor 2 siruri (sirul codificat si cheia) apeland strlen care determina lungimea fiecaruia dintre ele (pana la \0) si am apelat functia xor_strings, dupa care am afisat sirul decodificat. In functia xor_strings am pus in eax sirul codificat si in edi cheia. Am determinat lungimea primului sir folosind strlen si dupa am folosit o bucla numita xor_each_char pentru a lua cate un byte din sirul codificat, respectiv din cheie. Am facut xor intre cei doi octeti iar rezultatul a fost inlocuit in locul corespunzator din sirul codificat.
+	
+Task 2. Rolling XOR
+	In main am determinat adresa sirului codificat si am apelat functia rolling_xor, dupa care am afisat sirul decodificat. In functia rolling_xor am pus in eax sirul codificat. Am determinat lungimea sirului folosind strlen si dupa am folosit o bucla numita xor_roll in care am parcurs sirul de la final la inceput. Am luat cate un byte si am facut xor cu urmatorul iar rezultatul l-am pus pe pozitia primului byte (exact operatia inversa de codificare ). Astfel a rezultat sirul decodificat.
+
+Task 3. XOR între două șiruri reprezentate prin caractere hexazecimale
+
+	In main am determinat adresele celor 2 siruri (sirul codificat si cheia) si am apelat functia xor_hex_strings, dupa care am afisat sirul decodificat. In functia xor_strings am pus in eax sirul codificat si in edi cheia. Am determinat lungimea primului sir folosind strlen si dupa am folosit o bucla numita xor_hex pentru a lua grupuri de cate 2 octeti din sirul codificat, respectiv din cheie. Dupa care am transformat fiecare grup de 2 octeti intr-o singura valoare (tranformare in binar) folosindu-ma de tabelul ASCII. S-au folosit 4 flag-uri digit si letter [entru a realiza aceasta transformare cu care verificam tipul octetului luat si il converteam corespunzator. Apoi am realizat xor intre cele doua valori obtinute si am pus rezultatul pe pozitia corespunzatoare in stringul codificat. Sirul rezultat urma sa aiba lungimea sirului initial/2. Astfel am obtinut sirul decodificat.
+
+Task 4. Decodificarea unui șir în reprezentare base32
+	
+	In main am determinat adresa sirului codificat si am apelat functia base32decode, dupa care am afisat sirul decodificat. In functia base32decode am pus in eax sirul codificat. Am determinat lungimea sirului folosind strlen dupa care am realizat o bucla numita loop32. In aceasta bucla am luat grupuri de cate 8 octeti din stringul codificat si i-am transformat in cate 5 octeti ce urmau sa fie inlocuiti pe pozitiile corespunzatoare in stringul codificat. Pe fiecare dintre cei 8 octeti i-am convertit intr-unul din indexurile din alfabetul base32 (0 -> 31) folosind tabelul ASCII. Fiecare dintre acesti 8 octeti este un numar intre 0 si 31, reprezentabile pe 5 biti, deci bitii de la 5-7 din fiecare octet sunt 0. Pentru a forma primul octet din rezultat se iau primii 5 biti din prima valoare si se pun in octetul rezultat pe pozitiile de la 2-7. Pe primele 3 pozitii ramase libere se vor lua bitii de la 2-4 din a doua valoare. Pentru a forma al doilea octet din rezultat se vor pune pe pozitiile 6,7 bitii 0,1 din cea de-a doua valoare. Pe pozitiile 1-5 din cel de-al doilea octet rezultat se vor pune bitii 0-4 din a treia valoare. Iar pe prima pozitie 0, ramasa libera, se va pune bitul 4 din a patra valoare. Pentru a forma al treilea octet rezultat se vor pune pe pozitiile 4-7 bitii 0-3 din a patra valoare. Pe pozitiile 0-3 se vor pune bitii de pe pozitiile 1-4 din a cincea valoare. Pentru a forma al patrulea octet se va pune bitul de pe pozitia 0 din a cincea valoare pe pozitia 7 din rezultat. Pe pozitiile 2-6 se vor pune bitii de la 0-5 din a sasea valoare. Iar pe pozitiile 0-2 se vor pune bitii de la 3-4 din a saptea valoare. Iar pentru a forma al cincilea octet se vor lua bitii 0-2 din a saptea valoare si se vor pune pe pozitiile 5-7 din octet. Iar pe pozitiile ramase libere de la 0-4 se vor pune bitii de la 0-5 din a opta valoare. Astfel au rezultat 5 octeti ce vor fi pusi in stringul codificat pe pozitiile corespunzatoare.
+
+Task 5. Bruteforce pe XOR cu cheie de un octet
+
+ 	In main am determinat adresa sirului 7 dupa care am implementat 2 for-uri pentru a afla cheia folosita la codificare. Primul este folosit pentru a luat in dl toate numerele reprezentabile pe un octet (0 -> 0xFF), care ar putea reprezenta cheia. Cel de-al doilea este folosit pentru a lua grupuri de cate 5 octeti din stringul codificat. S-a realizat xor intre fiecare posibila cheie si fiecare din cei 5 octeti si s-a verificat aparitia succesiva a caracterelor 'f', 'o', 'r', 'c', 'e'. Atunci cand s-a gasit aceasta succesiune in rezultatele xor-urilor inseamna ca am gasit si cheia folosita in codificare. Dupa care am apelat functia bruteforce_singlebyte_xor in care s-a realizat xor intre fiecare octet din stringul codificat si cheia obtinuta. Astfel am obtinut sirul decodificat pe care l-am afisat in main, alaturi de cheia gasita in zecimal (142).
